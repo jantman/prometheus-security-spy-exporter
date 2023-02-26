@@ -19,14 +19,14 @@ jobs:
         with:
           push: true
           sbom: true
-          labels:
-            - "org.opencontainers.image.url=https://github.com/${{ github.repository }}"
-            - "org.opencontainers.image.source=https://github.com/${{ github.repository }}"
-            - "org.opencontainers.image.version=${{ github.ref_name }}"
-            - "org.opencontainers.image.revision=${{ github.sha }}"
-          tags:
-            - ${{ github.repository }}:${{ github.ref_name }}
-            - ${{ github.repository }}:latest
+          labels: |
+            org.opencontainers.image.url=https://github.com/${{ github.repository }}
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.version=${{ github.ref_name }}
+            org.opencontainers.image.revision=${{ github.sha }}
+          tags: |
+            ${{ github.repository }}:${{ github.ref_name }}
+            ${{ github.repository }}:latest
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
