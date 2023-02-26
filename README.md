@@ -41,3 +41,7 @@ python3 -mvenv venv
 source venv/bin/activate
 pip install -r requirements.txt
 ```
+
+### Release Process
+
+Tag the repo. [GitHub Actions](https://github.com/jantman/prometheus-security-spy-exporter/actions) will run a Docker build, push to Docker Hub, and create a release on the repo.
