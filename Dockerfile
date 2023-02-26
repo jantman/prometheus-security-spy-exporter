@@ -1,7 +1,8 @@
 FROM python:3.11.1-alpine3.17
 
 COPY main.py /main.py
-RUN pip install requests prometheus-client==0.15.0 xmltodict==0.13.0
+COPY requirements.txt /requirements.txt
+RUN pip install -r /requirements.txt
 
 EXPOSE 8080
 

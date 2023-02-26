@@ -39,5 +39,5 @@ Clone the repo, then in your clone:
 ```
 python3 -mvenv venv
 source venv/bin/activate
-pip install requests prometheus-client==0.15.0 xmltodict==0.13.0
+pip install -r requirements.txt
 ```

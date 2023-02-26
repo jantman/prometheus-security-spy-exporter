@@ -30,9 +30,9 @@ import os
 import argparse
 import logging
 import socket
-import time
 from typing import Generator, List, Dict, Optional
 
+import requests
 import xmltodict
 from wsgiref.simple_server import make_server, WSGIServer
 from prometheus_client.core import (
@@ -44,24 +44,6 @@ from prometheus_client.samples import Sample
 FORMAT = "[%(asctime)s %(levelname)s] %(message)s"
 logging.basicConfig(level=logging.WARNING, format=FORMAT)
 logger = logging.getLogger()
-
-
-def enum_metric_family(
-    name: str, documentation: str, states: List[str], value: str
-):
-    """Since the client library doesn't have this..."""
-    if value not in states:
-        logger.error(
-            'Value of "%s" not listed in states %s for enum_metric_family %s',
-            value, states, name
-        )
-        states.append(value)
-    return StateSetMetricFamily(
-        name, documentation,
-        {
-            x: x == value for x in states
-        }
-    )
 
 
 class LabeledGaugeMetricFamily(Metric):
@@ -93,34 +75,6 @@ class LabeledGaugeMetricFamily(Metric):
         )
 
 
-class LabeledStateSetMetricFamily(Metric):
-    """Not sure why upstream doesn't allow this..."""
-
-    def __init__(
-        self,
-        name: str,
-        documentation: str,
-        labels: Optional[Dict[str, str]] = None,
-    ):
-        Metric.__init__(self, name, documentation, 'stateset')
-        if labels is None:
-            labels = {}
-        self._labels = labels
-
-    def add_metric(
-        self, value: Dict[str, bool], labels: Optional[Dict[str, str]] = None
-    ) -> None:
-        if labels is None:
-            labels = {}
-        for state, enabled in sorted(value.items()):
-            v = (1 if enabled else 0)
-            self.samples.append(Sample(
-                self.name,
-                dict(self._labels | labels | {self.name: state}),
-                v,
-            ))
-
-
 class SecuritySpyCollector:
 
     def _env_or_err(self, name: str) -> str:
@@ -143,18 +97,108 @@ class SecuritySpyCollector:
         logger.info(
             'Connecting to Security Spy at %s:%s as user %s', ip, port, username
         )
-        self.query_time: float = 0.0
+        #raise NotImplementedError('requests.session')
 
-    def _get_systeminfo_data(self):
+    def _get_data(self) -> dict:
         with open('apiResponse.xml', 'r') as fh:
             xml = fh.read()
-        d = xmltodict.parse(xml)
-        import json
-        print(json.dumps(d, sort_keys=True, indent=4))
+        return xmltodict.parse(xml)['system']
 
     def collect(self) -> Generator[Metric, None, None]:
-        logger.debug('Beginning collection')
-        raise NotImplementedError()
+        sysinfo: dict = self._get_data()
+        yield GaugeMetricFamily(
+            'securityspy_server_camera_count', 'Camera count',
+            value=int(sysinfo['server']['camera-count'])
+        )
+        yield GaugeMetricFamily(
+            'securityspy_server_cpu_usage', 'CPU Usage',
+            unit='percent', value=int(sysinfo['server']['cpu-usage'])
+        )
+        yield GaugeMetricFamily(
+            'securityspy_server_memory_pressure', 'Memory Pressure',
+            value=int(sysinfo['server']['memory-pressure'])
+        )
+        # cameras
+        connected = LabeledGaugeMetricFamily(
+            'securityspy_camera_connected', 'Camera connected'
+        )
+        fps = LabeledGaugeMetricFamily(
+            'securityspy_camera_fps', 'Camera FPS', unit='FPS'
+        )
+        height = LabeledGaugeMetricFamily(
+            'securityspy_camera_height', 'Camera Height', unit='PX'
+        )
+        width = LabeledGaugeMetricFamily(
+            'securityspy_camera_width', 'Camera Width', unit='PX'
+        )
+        md_cap = LabeledGaugeMetricFamily(
+            'securityspy_camera_md_capture', 'Camera Motion Detection Capture'
+        )
+        md_en = LabeledGaugeMetricFamily(
+            'securityspy_camera_md_enable', 'Camera Motion Detection Enabled'
+        )
+        mode = LabeledGaugeMetricFamily(
+            'securityspy_camera_mode', 'Camera Mode'
+        )
+        mode_a = LabeledGaugeMetricFamily(
+            'securityspy_camera_mode_a', 'Camera Mode A'
+        )
+        mode_c = LabeledGaugeMetricFamily(
+            'securityspy_camera_mode_c', 'Camera Mode C'
+        )
+        mode_m = LabeledGaugeMetricFamily(
+            'securityspy_camera_mode_m', 'Camera Mode M'
+        )
+        tslf = LabeledGaugeMetricFamily(
+            'securityspy_camera_time_since_last_frame',
+            'Camera Time Since Last Frame', unit='seconds'
+        )
+        tslm = LabeledGaugeMetricFamily(
+            'securityspy_camera_time_since_last_motion',
+            'Camera Time Since Last Motion', unit='seconds'
+        )
+        for cam in sysinfo['cameralist']['camera']:
+            labels = {'camera_name': cam['name']}
+            connected.add_metric(
+                labels=labels, value=1 if cam['connected'] == 'yes' else 0
+            )
+            fps.add_metric(
+                labels=labels, value=float(cam['current-fps'])
+            )
+            height.add_metric(
+                labels=labels, value=int(cam['height'])
+            )
+            width.add_metric(
+                labels=labels, value=int(cam['width'])
+            )
+            md_cap.add_metric(
+                labels=labels, value=1 if cam['md_capture'] == 'yes' else 0
+            )
+            md_en.add_metric(
+                labels=labels, value=1 if cam['md_enabled'] == 'yes' else 0
+            )
+            mode.add_metric(
+                labels=labels, value=1 if cam['mode'] == 'active' else 0
+            )
+            mode_a.add_metric(
+                labels=labels, value=1 if cam['mode-a'] == 'active' else 0
+            )
+            mode_c.add_metric(
+                labels=labels, value=1 if cam['mode-c'] == 'active' else 0
+            )
+            mode_m.add_metric(
+                labels=labels, value=1 if cam['mode-m'] == 'active' else 0
+            )
+            tslf.add_metric(
+                labels=labels, value=float(cam['timesincelastframe'])
+            )
+            tslm.add_metric(
+                labels=labels, value=float(cam['timesincelastmotion'])
+            )
+        yield from [
+            connected, fps, height, width, md_cap, md_en, mode, mode_a, mode_c,
+            mode_m, tslf, tslm
+        ]
 
 
 def _get_best_family(address, port):
@@ -237,9 +281,6 @@ if __name__ == "__main__":
         set_log_debug()
     elif args.verbose == 1:
         set_log_info()
-    SecuritySpyCollector()._get_systeminfo_data()
-    raise NotImplementedError()
-    logger.debug('Registering collector...')
     REGISTRY.register(SecuritySpyCollector())
     logger.info('Starting HTTP server on port %d', args.port)
     serve_exporter(args.port)
