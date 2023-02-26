@@ -30,14 +30,12 @@ import os
 import argparse
 import logging
 import socket
-from typing import Generator, List, Dict, Optional
+from typing import Generator, Dict, Optional
 
 import requests
 import xmltodict
 from wsgiref.simple_server import make_server, WSGIServer
-from prometheus_client.core import (
-    REGISTRY, GaugeMetricFamily, InfoMetricFamily, StateSetMetricFamily, Metric
-)
+from prometheus_client.core import REGISTRY, GaugeMetricFamily, Metric
 from prometheus_client.exposition import make_wsgi_app, _SilentHandler
 from prometheus_client.samples import Sample
 
@@ -97,12 +95,21 @@ class SecuritySpyCollector:
         logger.info(
             'Connecting to Security Spy at %s:%s as user %s', ip, port, username
         )
-        #raise NotImplementedError('requests.session')
+        self.sess: requests.Session = requests.Session()
+        self.sess.auth = (username, passwd)
+        self.url: str = f'http://{ip}:{port}/systemInfo'
+        self.kwargs: dict = {'timeout': timeout}
+        if use_https:
+            self.url: str = f'https://{ip}:{port}/systemInfo'
+            if verify_ssl:
+                self.kwargs['verify'] = True
+            else:
+                self.kwargs['verify'] = False
 
     def _get_data(self) -> dict:
-        with open('apiResponse.xml', 'r') as fh:
-            xml = fh.read()
-        return xmltodict.parse(xml)['system']
+        r = self.sess.get(self.url, **self.kwargs)
+        r.raise_for_status()
+        return xmltodict.parse(r.content)['system']
 
     def collect(self) -> Generator[Metric, None, None]:
         sysinfo: dict = self._get_data()
@@ -181,13 +188,13 @@ class SecuritySpyCollector:
                 labels=labels, value=1 if cam['mode'] == 'active' else 0
             )
             mode_a.add_metric(
-                labels=labels, value=1 if cam['mode-a'] == 'active' else 0
+                labels=labels, value=1 if cam['mode-a'] == 'armed' else 0
             )
             mode_c.add_metric(
-                labels=labels, value=1 if cam['mode-c'] == 'active' else 0
+                labels=labels, value=1 if cam['mode-c'] == 'armed' else 0
             )
             mode_m.add_metric(
-                labels=labels, value=1 if cam['mode-m'] == 'active' else 0
+                labels=labels, value=1 if cam['mode-m'] == 'armed' else 0
             )
             tslf.add_metric(
                 labels=labels, value=float(cam['timesincelastframe'])
