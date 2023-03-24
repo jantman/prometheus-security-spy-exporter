@@ -29,8 +29,9 @@ import sys
 import os
 import argparse
 import logging
+import time
 import socket
-from typing import Generator, Dict, Optional
+from typing import Generator, Dict, Optional, List
 
 import requests
 import xmltodict
@@ -85,7 +86,7 @@ class SecuritySpyCollector:
 
     def __init__(self):
         logger.debug('Instantiating SecuritySpyCollector')
-        ip: str = self._env_or_err('SECSPY_IP')
+        ip: str = os.environ.get('SECSPY_IP', '127.0.0.1')
         port: int = int(os.environ.get('SECSPY_PORT', '8000'))
         username: str = self._env_or_err('SECSPY_USER')
         passwd: str = self._env_or_err('SECSPY_PASS')
@@ -95,6 +96,7 @@ class SecuritySpyCollector:
         logger.info(
             'Connecting to Security Spy at %s:%s as user %s', ip, port, username
         )
+        self.video_dir: Optional[str] = os.environ.get('SECSPY_STORAGE_DIR')
         self.sess: requests.Session = requests.Session()
         self.sess.auth = (username, passwd)
         self.url: str = f'http://{ip}:{port}/systemInfo'
@@ -164,6 +166,10 @@ class SecuritySpyCollector:
             'securityspy_camera_time_since_last_motion',
             'Camera Time Since Last Motion', unit='seconds'
         )
+        metrics = [
+            connected, fps, height, width, md_cap, md_en, mode, mode_a, mode_c,
+            mode_m, tslf, tslm
+        ]
         for cam in sysinfo['cameralist']['camera']:
             labels = {'camera_name': cam['name']}
             connected.add_metric(
@@ -202,10 +208,60 @@ class SecuritySpyCollector:
             tslm.add_metric(
                 labels=labels, value=float(cam['timesincelastmotion'])
             )
-        yield from [
-            connected, fps, height, width, md_cap, md_en, mode, mode_a, mode_c,
-            mode_m, tslf, tslm
-        ]
+        if self.video_dir:
+            numf = LabeledGaugeMetricFamily(
+                'securityspy_camera_num_files',
+                'Camera Number of Files'
+            )
+            num_bytes = LabeledGaugeMetricFamily(
+                'securityspy_camera_recorded',
+                'Camera Recorded Bytes', unit='bytes'
+            )
+            oldest_age = LabeledGaugeMetricFamily(
+                'securityspy_oldest_recording_age',
+                'Camera Oldest Recording Age', unit='seconds'
+            )
+            newest_age = LabeledGaugeMetricFamily(
+                'securityspy_newest_recording_age',
+                'Camera Newest Recording Age', unit='seconds'
+            )
+            metrics.extend([numf, num_bytes, newest_age, oldest_age])
+            logger.debug('Listing subdirectories under %s', self.video_dir)
+            subdir: str
+            for subdir in [
+                f.path for f in os.scandir(self.video_dir) if f.is_dir()
+            ]:
+                dirname: str = os.path.basename(subdir)
+                if dirname.startswith('.'):
+                    logger.debug('Skipping dot directory: %s', dirname)
+                    continue
+                logger.debug('Handling directory: %s', dirname)
+                labels = {'camera_name': dirname}
+                numfiles: int = 0
+                total_bytes: int = 0
+                oldest: float = time.time() + 100
+                newest: float = 0
+                for topdir, subdirs, files in os.walk(subdir):
+                    for f in files:
+                        fpath: str = os.path.join(subdir, topdir, f)
+                        numfiles += 1
+                        stat = os.stat(fpath)
+                        total_bytes += stat.st_size
+                        if stat.st_ctime > newest:
+                            newest = stat.st_ctime
+                        if stat.st_ctime < oldest:
+                            oldest = stat.st_ctime
+                age_oldest = time.time() - oldest
+                age_newest = time.time() - newest
+                logger.debug(
+                    '%s: numfiles=%d total_bytes=%d oldest_age=%d newest_age=%d',
+                    dirname, numfiles, total_bytes, age_oldest, age_newest
+                )
+                numf.add_metric(labels=labels, value=numfiles)
+                num_bytes.add_metric(labels=labels, value=total_bytes)
+                oldest_age.add_metric(labels=labels, value=age_oldest)
+                newest_age.add_metric(labels=labels, value=age_newest)
+        yield from metrics
 
 
 def _get_best_family(address, port):

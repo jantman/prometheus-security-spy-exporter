@@ -1,0 +1,219 @@
+# HELP python_gc_objects_collected_total Objects collected during gc
+# TYPE python_gc_objects_collected_total counter
+python_gc_objects_collected_total{generation="0"} 312.0
+python_gc_objects_collected_total{generation="1"} 328.0
+python_gc_objects_collected_total{generation="2"} 0.0
+# HELP python_gc_objects_uncollectable_total Uncollectable object found during GC
+# TYPE python_gc_objects_uncollectable_total counter
+python_gc_objects_uncollectable_total{generation="0"} 0.0
+python_gc_objects_uncollectable_total{generation="1"} 0.0
+python_gc_objects_uncollectable_total{generation="2"} 0.0
+# HELP python_gc_collections_total Number of times this generation was collected
+# TYPE python_gc_collections_total counter
+python_gc_collections_total{generation="0"} 54.0
+python_gc_collections_total{generation="1"} 4.0
+python_gc_collections_total{generation="2"} 0.0
+# HELP python_info Python platform information
+# TYPE python_info gauge
+python_info{implementation="CPython",major="3",minor="11",patchlevel="2",version="3.11.2"} 1.0
+# HELP securityspy_server_camera_count Camera count
+# TYPE securityspy_server_camera_count gauge
+securityspy_server_camera_count 10.0
+# HELP securityspy_server_cpu_usage_percent CPU Usage
+# TYPE securityspy_server_cpu_usage_percent gauge
+securityspy_server_cpu_usage_percent 42.0
+# HELP securityspy_server_memory_pressure Memory Pressure
+# TYPE securityspy_server_memory_pressure gauge
+securityspy_server_memory_pressure 0.0
+# HELP securityspy_camera_connected Camera connected
+# TYPE securityspy_camera_connected gauge
+securityspy_camera_connected{camera_name="Woodshop1"} 1.0
+securityspy_camera_connected{camera_name="Eshop"} 1.0
+securityspy_camera_connected{camera_name="Upstairs"} 1.0
+securityspy_camera_connected{camera_name="EastDoor"} 1.0
+securityspy_camera_connected{camera_name="MainRoom1"} 1.0
+securityspy_camera_connected{camera_name="MainRoom2"} 1.0
+securityspy_camera_connected{camera_name="WeldingPad"} 1.0
+securityspy_camera_connected{camera_name="Foyer"} 1.0
+securityspy_camera_connected{camera_name="MainRoom3"} 1.0
+securityspy_camera_connected{camera_name="Lab"} 1.0
+# HELP securityspy_camera_fps_FPS Camera FPS
+# TYPE securityspy_camera_fps_FPS gauge
+securityspy_camera_fps_FPS{camera_name="Woodshop1"} 25.105
+securityspy_camera_fps_FPS{camera_name="Eshop"} 24.901
+securityspy_camera_fps_FPS{camera_name="Upstairs"} 24.901
+securityspy_camera_fps_FPS{camera_name="EastDoor"} 25.105
+securityspy_camera_fps_FPS{camera_name="MainRoom1"} 24.901
+securityspy_camera_fps_FPS{camera_name="MainRoom2"} 24.901
+securityspy_camera_fps_FPS{camera_name="WeldingPad"} 25.105
+securityspy_camera_fps_FPS{camera_name="Foyer"} 25.105
+securityspy_camera_fps_FPS{camera_name="MainRoom3"} 25.105
+securityspy_camera_fps_FPS{camera_name="Lab"} 25.105
+# HELP securityspy_camera_height_PX Camera Height
+# TYPE securityspy_camera_height_PX gauge
+securityspy_camera_height_PX{camera_name="Woodshop1"} 1520.0
+securityspy_camera_height_PX{camera_name="Eshop"} 1520.0
+securityspy_camera_height_PX{camera_name="Upstairs"} 1520.0
+securityspy_camera_height_PX{camera_name="EastDoor"} 1520.0
+securityspy_camera_height_PX{camera_name="MainRoom1"} 1520.0
+securityspy_camera_height_PX{camera_name="MainRoom2"} 1520.0
+securityspy_camera_height_PX{camera_name="WeldingPad"} 1520.0
+securityspy_camera_height_PX{camera_name="Foyer"} 1520.0
+securityspy_camera_height_PX{camera_name="MainRoom3"} 1520.0
+securityspy_camera_height_PX{camera_name="Lab"} 1520.0
+# HELP securityspy_camera_width_PX Camera Width
+# TYPE securityspy_camera_width_PX gauge
+securityspy_camera_width_PX{camera_name="Woodshop1"} 2688.0
+securityspy_camera_width_PX{camera_name="Eshop"} 2688.0
+securityspy_camera_width_PX{camera_name="Upstairs"} 2688.0
+securityspy_camera_width_PX{camera_name="EastDoor"} 2688.0
+securityspy_camera_width_PX{camera_name="MainRoom1"} 2688.0
+securityspy_camera_width_PX{camera_name="MainRoom2"} 2688.0
+securityspy_camera_width_PX{camera_name="WeldingPad"} 2688.0
+securityspy_camera_width_PX{camera_name="Foyer"} 2688.0
+securityspy_camera_width_PX{camera_name="MainRoom3"} 2688.0
+securityspy_camera_width_PX{camera_name="Lab"} 2688.0
+# HELP securityspy_camera_md_capture Camera Motion Detection Capture
+# TYPE securityspy_camera_md_capture gauge
+securityspy_camera_md_capture{camera_name="Woodshop1"} 1.0
+securityspy_camera_md_capture{camera_name="Eshop"} 1.0
+securityspy_camera_md_capture{camera_name="Upstairs"} 1.0
+securityspy_camera_md_capture{camera_name="EastDoor"} 1.0
+securityspy_camera_md_capture{camera_name="MainRoom1"} 1.0
+securityspy_camera_md_capture{camera_name="MainRoom2"} 1.0
+securityspy_camera_md_capture{camera_name="WeldingPad"} 1.0
+securityspy_camera_md_capture{camera_name="Foyer"} 1.0
+securityspy_camera_md_capture{camera_name="MainRoom3"} 1.0
+securityspy_camera_md_capture{camera_name="Lab"} 1.0
+# HELP securityspy_camera_md_enable Camera Motion Detection Enabled
+# TYPE securityspy_camera_md_enable gauge
+securityspy_camera_md_enable{camera_name="Woodshop1"} 1.0
+securityspy_camera_md_enable{camera_name="Eshop"} 1.0
+securityspy_camera_md_enable{camera_name="Upstairs"} 1.0
+securityspy_camera_md_enable{camera_name="EastDoor"} 1.0
+securityspy_camera_md_enable{camera_name="MainRoom1"} 1.0
+securityspy_camera_md_enable{camera_name="MainRoom2"} 1.0
+securityspy_camera_md_enable{camera_name="WeldingPad"} 1.0
+securityspy_camera_md_enable{camera_name="Foyer"} 1.0
+securityspy_camera_md_enable{camera_name="MainRoom3"} 1.0
+securityspy_camera_md_enable{camera_name="Lab"} 1.0
+# HELP securityspy_camera_mode Camera Mode
+# TYPE securityspy_camera_mode gauge
+securityspy_camera_mode{camera_name="Woodshop1"} 0.0
+securityspy_camera_mode{camera_name="Eshop"} 0.0
+securityspy_camera_mode{camera_name="Upstairs"} 0.0
+securityspy_camera_mode{camera_name="EastDoor"} 0.0
+securityspy_camera_mode{camera_name="MainRoom1"} 0.0
+securityspy_camera_mode{camera_name="MainRoom2"} 0.0
+securityspy_camera_mode{camera_name="WeldingPad"} 0.0
+securityspy_camera_mode{camera_name="Foyer"} 0.0
+securityspy_camera_mode{camera_name="MainRoom3"} 0.0
+securityspy_camera_mode{camera_name="Lab"} 0.0
+# HELP securityspy_camera_mode_a Camera Mode A
+# TYPE securityspy_camera_mode_a gauge
+securityspy_camera_mode_a{camera_name="Woodshop1"} 1.0
+securityspy_camera_mode_a{camera_name="Eshop"} 1.0
+securityspy_camera_mode_a{camera_name="Upstairs"} 1.0
+securityspy_camera_mode_a{camera_name="EastDoor"} 1.0
+securityspy_camera_mode_a{camera_name="MainRoom1"} 1.0
+securityspy_camera_mode_a{camera_name="MainRoom2"} 1.0
+securityspy_camera_mode_a{camera_name="WeldingPad"} 1.0
+securityspy_camera_mode_a{camera_name="Foyer"} 1.0
+securityspy_camera_mode_a{camera_name="MainRoom3"} 1.0
+securityspy_camera_mode_a{camera_name="Lab"} 1.0
+# HELP securityspy_camera_mode_c Camera Mode C
+# TYPE securityspy_camera_mode_c gauge
+securityspy_camera_mode_c{camera_name="Woodshop1"} 0.0
+securityspy_camera_mode_c{camera_name="Eshop"} 0.0
+securityspy_camera_mode_c{camera_name="Upstairs"} 0.0
+securityspy_camera_mode_c{camera_name="EastDoor"} 0.0
+securityspy_camera_mode_c{camera_name="MainRoom1"} 0.0
+securityspy_camera_mode_c{camera_name="MainRoom2"} 0.0
+securityspy_camera_mode_c{camera_name="WeldingPad"} 0.0
+securityspy_camera_mode_c{camera_name="Foyer"} 0.0
+securityspy_camera_mode_c{camera_name="MainRoom3"} 0.0
+securityspy_camera_mode_c{camera_name="Lab"} 0.0
+# HELP securityspy_camera_mode_m Camera Mode M
+# TYPE securityspy_camera_mode_m gauge
+securityspy_camera_mode_m{camera_name="Woodshop1"} 1.0
+securityspy_camera_mode_m{camera_name="Eshop"} 1.0
+securityspy_camera_mode_m{camera_name="Upstairs"} 1.0
+securityspy_camera_mode_m{camera_name="EastDoor"} 1.0
+securityspy_camera_mode_m{camera_name="MainRoom1"} 1.0
+securityspy_camera_mode_m{camera_name="MainRoom2"} 1.0
+securityspy_camera_mode_m{camera_name="WeldingPad"} 1.0
+securityspy_camera_mode_m{camera_name="Foyer"} 1.0
+securityspy_camera_mode_m{camera_name="MainRoom3"} 1.0
+securityspy_camera_mode_m{camera_name="Lab"} 1.0
+# HELP securityspy_camera_time_since_last_frame_seconds Camera Time Since Last Frame
+# TYPE securityspy_camera_time_since_last_frame_seconds gauge
+securityspy_camera_time_since_last_frame_seconds{camera_name="Woodshop1"} 0.0
+securityspy_camera_time_since_last_frame_seconds{camera_name="Eshop"} 0.0
+securityspy_camera_time_since_last_frame_seconds{camera_name="Upstairs"} 0.0
+securityspy_camera_time_since_last_frame_seconds{camera_name="EastDoor"} 0.0
+securityspy_camera_time_since_last_frame_seconds{camera_name="MainRoom1"} 0.0
+securityspy_camera_time_since_last_frame_seconds{camera_name="MainRoom2"} 0.0
+securityspy_camera_time_since_last_frame_seconds{camera_name="WeldingPad"} 0.0
+securityspy_camera_time_since_last_frame_seconds{camera_name="Foyer"} 0.0
+securityspy_camera_time_since_last_frame_seconds{camera_name="MainRoom3"} 0.0
+securityspy_camera_time_since_last_frame_seconds{camera_name="Lab"} 0.0
+# HELP securityspy_camera_time_since_last_motion_seconds Camera Time Since Last Motion
+# TYPE securityspy_camera_time_since_last_motion_seconds gauge
+securityspy_camera_time_since_last_motion_seconds{camera_name="Woodshop1"} 1202.0
+securityspy_camera_time_since_last_motion_seconds{camera_name="Eshop"} 2066.0
+securityspy_camera_time_since_last_motion_seconds{camera_name="Upstairs"} 280.0
+securityspy_camera_time_since_last_motion_seconds{camera_name="EastDoor"} 365.0
+securityspy_camera_time_since_last_motion_seconds{camera_name="MainRoom1"} 13.0
+securityspy_camera_time_since_last_motion_seconds{camera_name="MainRoom2"} 6.0
+securityspy_camera_time_since_last_motion_seconds{camera_name="WeldingPad"} 337.0
+securityspy_camera_time_since_last_motion_seconds{camera_name="Foyer"} 352.0
+securityspy_camera_time_since_last_motion_seconds{camera_name="MainRoom3"} 9.0
+securityspy_camera_time_since_last_motion_seconds{camera_name="Lab"} 36334.0
+# HELP securityspy_camera_num_files Camera Number of Files
+# TYPE securityspy_camera_num_files gauge
+securityspy_camera_num_files{camera_name="EastDoor"} 14184.0
+securityspy_camera_num_files{camera_name="Eshop"} 3830.0
+securityspy_camera_num_files{camera_name="Foyer"} 8215.0
+securityspy_camera_num_files{camera_name="Lab"} 34.0
+securityspy_camera_num_files{camera_name="MainRoom1"} 27897.0
+securityspy_camera_num_files{camera_name="MainRoom2"} 20455.0
+securityspy_camera_num_files{camera_name="MainRoom3"} 1749.0
+securityspy_camera_num_files{camera_name="Upstairs"} 3912.0
+securityspy_camera_num_files{camera_name="WeldingPad"} 9097.0
+securityspy_camera_num_files{camera_name="Woodshop1"} 19113.0
+# HELP securityspy_camera_recorded_bytes Camera Recorded Bytes
+# TYPE securityspy_camera_recorded_bytes gauge
+securityspy_camera_recorded_bytes{camera_name="EastDoor"} 1.71831205554e+011
+securityspy_camera_recorded_bytes{camera_name="Eshop"} 7.209759685e+010
+securityspy_camera_recorded_bytes{camera_name="Foyer"} 1.29357015677e+011
+securityspy_camera_recorded_bytes{camera_name="Lab"} 3.42777234e+08
+securityspy_camera_recorded_bytes{camera_name="MainRoom1"} 5.37161609774e+011
+securityspy_camera_recorded_bytes{camera_name="MainRoom2"} 3.85665409871e+011
+securityspy_camera_recorded_bytes{camera_name="MainRoom3"} 4.4798872467e+010
+securityspy_camera_recorded_bytes{camera_name="Upstairs"} 5.9218003734e+010
+securityspy_camera_recorded_bytes{camera_name="WeldingPad"} 1.13973398063e+011
+securityspy_camera_recorded_bytes{camera_name="Woodshop1"} 4.64311368487e+011
+# HELP securityspy_newest_recording_age_seconds Camera Newest Recording Age
+# TYPE securityspy_newest_recording_age_seconds gauge
+securityspy_newest_recording_age_seconds{camera_name="EastDoor"} 344.24359607696533
+securityspy_newest_recording_age_seconds{camera_name="Eshop"} 528.2956211566925
+securityspy_newest_recording_age_seconds{camera_name="Foyer"} 331.4004108905792
+securityspy_newest_recording_age_seconds{camera_name="Lab"} 36313.40100002289
+securityspy_newest_recording_age_seconds{camera_name="MainRoom1"} 0.6959550380706787
+securityspy_newest_recording_age_seconds{camera_name="MainRoom2"} 0.9358730316162109
+securityspy_newest_recording_age_seconds{camera_name="MainRoom3"} 0.9527390003204346
+securityspy_newest_recording_age_seconds{camera_name="Upstairs"} 259.0044689178467
+securityspy_newest_recording_age_seconds{camera_name="WeldingPad"} 316.1211609840393
+securityspy_newest_recording_age_seconds{camera_name="Woodshop1"} 1182.3372480869293
+# HELP securityspy_oldest_recording_age_seconds Camera Oldest Recording Age
+# TYPE securityspy_oldest_recording_age_seconds gauge
+securityspy_oldest_recording_age_seconds{camera_name="EastDoor"} 5.435540243596077e+06
+securityspy_oldest_recording_age_seconds{camera_name="Eshop"} 5.435423295620203e+06
+securityspy_oldest_recording_age_seconds{camera_name="Foyer"} 5.435553400410175e+06
+securityspy_oldest_recording_age_seconds{camera_name="Lab"} 161974.4010000229
+securityspy_oldest_recording_age_seconds{camera_name="MainRoom1"} 5.435557695953846e+06
+securityspy_oldest_recording_age_seconds{camera_name="MainRoom2"} 5.4352239358689785e+06
+securityspy_oldest_recording_age_seconds{camera_name="MainRoom3"} 162488.95273804665
+securityspy_oldest_recording_age_seconds{camera_name="Upstairs"} 5.431482004468918e+06
+securityspy_oldest_recording_age_seconds{camera_name="WeldingPad"} 5.43537012116003e+06
+securityspy_oldest_recording_age_seconds{camera_name="Woodshop1"} 5.434968337245941e+06

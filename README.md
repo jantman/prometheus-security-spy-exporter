@@ -8,7 +8,9 @@ Prometheus exporter for [Security Spy](https://www.bensoftware.com/securityspy/)
 
 ## Usage
 
-This is really only intended to be run via Docker. To run on port 8080:
+### Docker
+
+To run on port 8080:
 
 ```
 docker run -p 8080:8080 \
@@ -18,19 +20,37 @@ docker run -p 8080:8080 \
     jantman/prometheus-synology-api-exporter:latest
 ```
 
+### MacOS
+
+Yeah, this may not be best practice. Also, note that the plist currently has `python3.11` hard-coded. Please update that as needed.
+
+1. Install [homebrew](https://brew.sh/) and, if not done yet, ``brew install python``
+2. Install dependencies: ``pip install requests prometheus-client==0.15.0 xmltodict==0.13.0``
+3. Copy [main.py](main.py) to ``/Users/administrator/security_spy_exporter.py``
+4. After editing the relevant items (environment variables; change the ``EDIT-ME`` values, and remove the ``SECSPY_STORAGE_DIR`` one if you don't want storage metrics), copy [security_spy_exporter.plist](security_spy_exporter.plist) to ``/Library/LaunchDaemons/security_spy_exporter.plist`` (using ``sudo cp security_spy_exporter.plist /Library/LaunchDaemons/security_spy_exporter.plist``), and then run ``sudo chown root:wheel /Library/LaunchDaemons/security_spy_exporter.plist && sudo launchctl load /Library/LaunchDaemons/security_spy_exporter.plist``
+5. Open System Preferences -> Security and Privacy. Click the "Privacy" tab at the top, and then scroll to and click "Full Disk Access" in the left menu. In the main pane, scroll to and click the check box next to `python3.11`.
+6. ``sudo launchctl unload /Library/LaunchDaemons/security_spy_exporter.plist && sudo launchctl load /Library/LaunchDaemons/security_spy_exporter.plist``
+
+You should now be able to reach the metrics endpoint and get metrics back (default: http://127.0.0.1:8080 ).
+
 ### Environment Variables
 
-* `SECSPY_IP` (**required**) - The IP address or hostname to connect to Security Spy on.
+* `SECSPY_IP` (*optional*) - The IP address or hostname to connect to Security Spy on. Defaults to `127.0.0.1`. **Required** when running via Docker.
 * `SECSPY_USER` (**required**) - The username for logging in to the Security Spy web UI. Ideally this should be a limited user.
 * `SECSPY_PASS` (**required**) - The password for `SECSPY_USER`.
 * `SECSPY_PORT` (*optional*) - The port number to connect to Security Spy on. Defaults to 8000.
 * `SECSPY_USE_HTTPS` (*optional*) - Set to `true` if you want to connect over HTTPS. Defaults to unset (plain HTTP).
 * `SECSPY_VERIFY_SSL` (*optional*) - Set to `true` if you want to verify SSL. Defaults to unset (verify False).
 * `SECSPY_TIMEOUT_SEC` (*optional*) - Timeout in seconds for API calls. Defaults to 30.
+* `SECSPY_STORAGE_DIR` (*optional) - Video storage directory, if you want to gather statistics on it. **Note** that this can significantly increase scrape time.
 
 ### Debugging
 
 For debugging, append `-vv` to your `docker run` command, to run the entrypoint with debug-level logging.
+
+## Metrics Provided
+
+An example of the output of the `/metrics` endpoint can be seen at [example.prom](example.prom)
 
 ## Development
 
