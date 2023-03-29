@@ -1,0 +1,1030 @@
+apiVersion: 1
+groups:
+    - orgId: 1
+      name: securityspy-tf
+      folder: SecuritySpy
+      interval: 1m
+      rules:
+        - uid: mXDOD_B4k
+          title: SecuritySpy Camera Count [TF]
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: _WIZngTVz
+              model:
+                datasource:
+                    type: prometheus
+                    uid: _WIZngTVz
+                editorMode: code
+                exemplar: true
+                expr: min_over_time(securityspy_server_camera_count[1m])
+                interval: ""
+                intervalMs: 5000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: min
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 10
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: FddhbtBVk
+          panelId: 2
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: FddhbtBVk
+            __panelId__: "2"
+            description: SecuritySpy is reporting only {{ $values.B.Value }} cameras, but should have 10
+            summary: SecuritySpy cameras missing
+          labels:
+            Severity: critical
+          isPaused: false
+        - uid: MXDODlB4z
+          title: SecuritySpy CPU usage [TF]
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: _WIZngTVz
+              model:
+                datasource:
+                    type: prometheus
+                    uid: _WIZngTVz
+                editorMode: code
+                exemplar: true
+                expr: avg_over_time(securityspy_server_cpu_usage_percent[1m])
+                interval: ""
+                intervalMs: 5000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: mean
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 60
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: FddhbtBVk
+          panelId: 4
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: FddhbtBVk
+            __panelId__: "4"
+            description: SecuritySpy is currently reporting {{ $values.B.Value }}% CPU usage
+            summary: SecuritySpy is reporting CPU usage of {{ $values.B.Value }}%
+          labels:
+            Severity: warning
+          isPaused: false
+        - uid: IXvdv_BVz
+          title: SecuritySpy Memory Pressure [TF]
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: _WIZngTVz
+              model:
+                datasource:
+                    type: prometheus
+                    uid: _WIZngTVz
+                editorMode: code
+                exemplar: true
+                expr: max_over_time(securityspy_server_memory_pressure[1m])
+                interval: ""
+                intervalMs: 5000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: max
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 60
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: FddhbtBVk
+          panelId: 5
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: FddhbtBVk
+            __panelId__: "5"
+            description: SecuritySpy is currently reporting {{ $values.B.Value }}% memory pressure maximum over the last minute
+            summary: SecuritySpy is reporting memory pressure of {{ $values.B.Value }}%
+          labels:
+            Severity: warning
+          isPaused: false
+        - uid: DuvODlBVk
+          title: SecuritySpy Camera Disconnected [TF]
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: _WIZngTVz
+              model:
+                datasource:
+                    type: prometheus
+                    uid: _WIZngTVz
+                editorMode: code
+                exemplar: true
+                expr: min_over_time(securityspy_camera_connected[1m])
+                interval: ""
+                intervalMs: 5000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: min
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 1
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: FddhbtBVk
+          panelId: 7
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: FddhbtBVk
+            __panelId__: "7"
+            description: SecuritySpy is reporting the {{ $values.B.Labels.camera_name }} disconnected
+            summary: SecuritySpy {{ $values.B.Labels.camera_name }} camera disconnected
+          labels:
+            Severity: critical
+          isPaused: false
+        - uid: 5XvOv_fVz
+          title: SecuritySpy Camera Seconds Since Last Frame [TF]
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: _WIZngTVz
+              model:
+                datasource:
+                    type: prometheus
+                    uid: _WIZngTVz
+                editorMode: code
+                exemplar: true
+                expr: max_over_time(securityspy_camera_time_since_last_frame_seconds[1m])
+                interval: ""
+                intervalMs: 5000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: max
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 30
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: FddhbtBVk
+          panelId: 9
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: FddhbtBVk
+            __panelId__: "9"
+            description: SecuritySpy camera {{ $values.B.Labels.camera_name }} last frame time is {{ $values.B.Value }} seconds ago.
+            summary: SecuritySpy camera {{ $values.B.Labels.camera_name }} is lagging
+          labels:
+            Severity: warning
+          isPaused: false
+        - uid: huvOvlfVz
+          title: SecuritySpy Camera FPS [TF]
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: _WIZngTVz
+              model:
+                datasource:
+                    type: prometheus
+                    uid: _WIZngTVz
+                editorMode: code
+                exemplar: true
+                expr: min_over_time(securityspy_camera_fps_FPS[1m])
+                interval: ""
+                intervalMs: 5000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: min
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 1
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: FddhbtBVk
+          panelId: 14
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: FddhbtBVk
+            __panelId__: "14"
+            description: SecuritySpy camera {{ $values.B.Labels.camera_name }} dropped to {{ $values.B.Value }} FPS during the last minute
+            summary: SecuritySpy {{ $values.B.Labels.camera_name }} low FPS
+          labels:
+            Severity: warning
+          isPaused: false
+        - uid: 0uDOv_BVz
+          title: SecuritySpy Number of Recordings [TF]
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: _WIZngTVz
+              model:
+                datasource:
+                    type: prometheus
+                    uid: _WIZngTVz
+                editorMode: code
+                exemplar: true
+                expr: min_over_time(securityspy_camera_num_files[1m])
+                interval: ""
+                intervalMs: 5000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: min
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 50
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: FddhbtBVk
+          panelId: 10
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: FddhbtBVk
+            __panelId__: "10"
+            description: SecuritySpy camera {{ $values.B.Labels.camera_name }} only has {{ $values.B.Value }} recording files; something may be wrong
+            summary: SecuritySpy {{ $values.B.Labels.camera_name }} only has {{ $values.B.Value }} recordings
+          labels:
+            Severity: warning
+          isPaused: false
+        - uid: 1uDdDlfVz
+          title: SecuritySpy Motion Detection Disabled [TF]
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: _WIZngTVz
+              model:
+                datasource:
+                    type: prometheus
+                    uid: _WIZngTVz
+                editorMode: code
+                exemplar: true
+                expr: min_over_time(securityspy_camera_md_enable[1m])
+                interval: ""
+                intervalMs: 5000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: min
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 1
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: FddhbtBVk
+          panelId: 17
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: FddhbtBVk
+            __panelId__: "17"
+            description: SecuritySpy camera {{ $values.B.Labels.camera_name }} has motion detection disabled
+            summary: SecuritySpy {{ $values.B.Labels.camera_name }} motion detection disabled
+          labels:
+            Severity: warning
+          isPaused: false
+        - uid: aXDdvlB4k
+          title: SecuritySpy Motion Capture Disabled [TF]
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: _WIZngTVz
+              model:
+                datasource:
+                    type: prometheus
+                    uid: _WIZngTVz
+                editorMode: code
+                exemplar: true
+                expr: min_over_time(securityspy_camera_md_capture[1m])
+                interval: ""
+                intervalMs: 5000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: min
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 1
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: FddhbtBVk
+          panelId: 16
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: FddhbtBVk
+            __panelId__: "16"
+            description: SecuritySpy camera {{ $values.B.Labels.camera_name }} has motion capture disabled
+            summary: SecuritySpy {{ $values.B.Labels.camera_name }} motion capture disabled
+          labels:
+            Severity: warning
+          isPaused: false
+        - uid: LuDdD_fVk
+          title: SecuritySpy Oldest Recording [TF]
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: _WIZngTVz
+              model:
+                datasource:
+                    type: prometheus
+                    uid: _WIZngTVz
+                editorMode: code
+                exemplar: true
+                expr: min_over_time(securityspy_oldest_recording_age_seconds[1m]) / 3600
+                interval: ""
+                intervalMs: 5000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: min
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 96
+                        type: lt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: FddhbtBVk
+          panelId: 13
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: FddhbtBVk
+            __panelId__: "13"
+            description: The oldest recording for SecuritySpy camera {{ $values.B.Labels.camera_name }} is only {{ $values.B.Value }} hours old. The system may not be retaining recordings properly.
+            summary: SecuritySpy {{ $values.B.Labels.camera_name }} oldest recording is unusually new
+          labels:
+            Severity: warning
+          isPaused: false
+        - uid: yuDOD_B4k
+          title: SecuritySpy Newest Recording [TF]
+          condition: C
+          data:
+            - refId: A
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: _WIZngTVz
+              model:
+                datasource:
+                    type: prometheus
+                    uid: _WIZngTVz
+                editorMode: code
+                exemplar: true
+                expr: max_over_time(securityspy_newest_recording_age_seconds[1m]) / 3600
+                interval: ""
+                intervalMs: 5000
+                legendFormat: __auto
+                maxDataPoints: 43200
+                range: true
+                refId: A
+            - refId: B
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params: []
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - B
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: A
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                reducer: max
+                refId: B
+                type: reduce
+            - refId: C
+              relativeTimeRange:
+                from: 3600
+                to: 0
+              datasourceUid: "-100"
+              model:
+                conditions:
+                    - evaluator:
+                        params:
+                            - 24
+                        type: gt
+                      operator:
+                        type: and
+                      query:
+                        params:
+                            - C
+                      reducer:
+                        params: []
+                        type: last
+                      type: query
+                datasource:
+                    type: __expr__
+                    uid: "-100"
+                expression: B
+                hide: false
+                intervalMs: 1000
+                maxDataPoints: 43200
+                refId: C
+                type: threshold
+          dashboardUid: FddhbtBVk
+          panelId: 12
+          noDataState: NoData
+          execErrState: Error
+          for: 1m
+          annotations:
+            __dashboardUid__: FddhbtBVk
+            __panelId__: "12"
+            description: The newest recording for SecuritySpy camera {{ $values.B.Labels.camera_name }} is {{ $values.B.Value }} hours old.
+            summary: SecuritySpy {{ $values.B.Labels.camera_name }} newest recording is over 24 hours ago
+          labels:
+            Severity: warning
+          isPaused: false

@@ -52,6 +52,10 @@ For debugging, append `-vv` to your `docker run` command, to run the entrypoint 
 
 An example of the output of the `/metrics` endpoint can be seen at [example.prom](example.prom)
 
+## Grafana Dashboard and Alerts
+
+An example Grafana dashboard is provided at [grafana_dashboard.json](grafana_dashboard.json) and some example alerts are provided at [grafana_alerts.yaml](grafana_alerts.yaml).
+
 ## Development
 
 Clone the repo, then in your clone:
