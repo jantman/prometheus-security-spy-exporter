@@ -202,12 +202,14 @@ class SecuritySpyCollector:
             mode_m.add_metric(
                 labels=labels, value=1 if cam['mode-m'] == 'armed' else 0
             )
-            tslf.add_metric(
-                labels=labels, value=float(cam['timesincelastframe'])
-            )
-            tslm.add_metric(
-                labels=labels, value=float(cam['timesincelastmotion'])
-            )
+            if cam['timesincelastframe']:
+                tslf.add_metric(
+                    labels=labels, value=float(cam['timesincelastframe'])
+                )
+            if cam['timesincelastmotion']:
+                tslm.add_metric(
+                    labels=labels, value=float(cam['timesincelastmotion'])
+                )
         if self.video_dir:
             numf = LabeledGaugeMetricFamily(
                 'securityspy_camera_num_files',
